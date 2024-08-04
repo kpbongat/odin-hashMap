@@ -39,6 +39,18 @@ class HashMap {
       previousNode.pointer = newNode;
     }
   }
+
+  get(key) {
+    const hashedKey = this.hash(key);
+    const bucket = this.buckets[hashedKey];
+    let currentNode = bucket.head;
+    while (currentNode != null) {
+      if (currentNode.value.key) {
+        return currentNode.value.key;
+      }
+      currentNode = currentNode.pointer;
+    }
+  }
 }
 
 class LinkedList {
