@@ -22,20 +22,20 @@ class HashMap {
     const hashedKey = this.hash(key);
     const bucket = this.buckets[hashedKey];
     if (!bucket.head) {
-      const newNode = new Node({ key: value });
+      const newNode = new Node({ [key]: value });
       bucket.head = newNode;
     } else {
       let currentNode = bucket.head;
       let previousNode;
       while (currentNode != null) {
         if (currentNode.value.key) {
-          currentNode.value = { key: value };
+          currentNode.value = { [key]: value };
           return;
         }
         previousNode = currentNode;
         currentNode = currentNode.pointer;
       }
-      const newNode = new Node({ key: value });
+      const newNode = new Node({ [key]: value });
       previousNode.pointer = newNode;
     }
   }
