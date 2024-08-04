@@ -1,8 +1,9 @@
 class HashMap {
-  #length = 0;
+  capacity = 16;
+  LOAD_FACTOR = 0.75;
   buckets = [];
   constructor() {
-    for (let i = 0; i < 16; i++) {
+    for (let i = 0; i < this.capacity; i++) {
       const bucket = new LinkedList();
       this.buckets.push(bucket);
     }
@@ -13,7 +14,7 @@ class HashMap {
     const primeNumber = 31;
     for (let i = 0; i < key.length; i++) {
       hashCode = primeNumber * hashCode + key.charCodeAt(i);
-      hashCode = hashCode % 16;
+      hashCode = hashCode % this.capacity;
     }
 
     return hashCode;
@@ -25,7 +26,6 @@ class HashMap {
     if (!bucket.head) {
       const newNode = new Node({ [key]: value });
       bucket.head = newNode;
-      this.#length = this.#length + 1;
     } else {
       let currentNode = bucket.head;
       let previousNode;
@@ -39,10 +39,26 @@ class HashMap {
       }
       const newNode = new Node({ [key]: value });
       previousNode.pointer = newNode;
-      this.#length = this.#length + 1;
+    }
+
+    if (this.length() > this.capacity * this.LOAD_FACTOR) {
+      this.grow();
     }
   }
 
+  grow() {
+    for (let i = 0; i < this.capacity; i++) {
+      const bucket = new LinkedList();
+      this.buckets.push(bucket);
+    }
+    this.capacity = this.capacity * 2;
+    const oldNodes = this.entries();
+    this.clear();
+    for (let node of oldNodes) {
+      const [key, value] = node;
+      this.set(key, value);
+    }
+  }
   get(key) {
     const hashedKey = this.hash(key);
     const bucket = this.buckets[hashedKey];
@@ -90,10 +106,18 @@ class HashMap {
     }
   }
 
-  get length() {
-    return this.#length;
-  }
+  length() {
+    let keyCount = 0;
+    for (let bucket of this.buckets) {
+      let currentNode = bucket.head;
 
+      while (currentNode != null) {
+        keyCount = keyCount + 1;
+        currentNode = currentNode.pointer;
+      }
+    }
+    return keyCount;
+  }
   clear() {
     for (let bucket of this.buckets) {
       bucket.head = null;
