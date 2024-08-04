@@ -1,4 +1,5 @@
 class HashMap {
+  #length = 0;
   buckets = [];
   constructor() {
     for (let i = 0; i < 16; i++) {
@@ -24,6 +25,7 @@ class HashMap {
     if (!bucket.head) {
       const newNode = new Node({ [key]: value });
       bucket.head = newNode;
+      this.#length = this.#length + 1;
     } else {
       let currentNode = bucket.head;
       let previousNode;
@@ -37,6 +39,7 @@ class HashMap {
       }
       const newNode = new Node({ [key]: value });
       previousNode.pointer = newNode;
+      this.#length = this.#length + 1;
     }
   }
 
@@ -85,6 +88,10 @@ class HashMap {
       }
       return false;
     }
+  }
+
+  get length() {
+    return this.#length;
   }
 }
 
