@@ -99,6 +99,32 @@ class HashMap {
       bucket.head = null;
     }
   }
+
+  keys() {
+    let keys = [];
+    for (let bucket of this.buckets) {
+      let currentNode = bucket.head;
+
+      while (currentNode != null) {
+        keys = [...keys, ...Object.keys(currentNode.value)];
+        currentNode = currentNode.pointer;
+      }
+    }
+    return keys;
+  }
+
+  values() {
+    let values = [];
+    for (let bucket of this.buckets) {
+      let currentNode = bucket.head;
+
+      while (currentNode != null) {
+        values = [...values, ...Object.values(currentNode.value)];
+        currentNode = currentNode.pointer;
+      }
+    }
+    return values;
+  }
 }
 
 class LinkedList {
