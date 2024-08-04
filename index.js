@@ -125,6 +125,19 @@ class HashMap {
     }
     return values;
   }
+
+  entries() {
+    let entries = [];
+    for (let bucket of this.buckets) {
+      let currentNode = bucket.head;
+
+      while (currentNode != null) {
+        entries = [...entries, ...Object.entries(currentNode.value)];
+        currentNode = currentNode.pointer;
+      }
+    }
+    return entries;
+  }
 }
 
 class LinkedList {
