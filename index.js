@@ -20,25 +20,29 @@ class HashMap {
 
   set(key, value) {
     const hashedKey = this.hash(key);
-    this.buckets[hashedKey].append(value);
+    const bucket = this.buckets[hashedKey];
+    if (!bucket.head) {
+      const newNode = new Node({ key: value });
+      bucket.head = newNode;
+    } else {
+      let currentNode = bucket.head;
+      let previousNode;
+      while (currentNode != null) {
+        if (currentNode.value.key === key) {
+          currentNode.value = { key: value };
+          break;
+        }
+        previousNode = currentNode;
+        currentNode = currentNode.pointer;
+      }
+      const newNode = new Node({ key: value });
+      previousNode.pointer = newNode;
+    }
   }
 }
 
 class LinkedList {
-  head;
-  append(value) {
-    if (!this.head) {
-      const newNode = new Node(value);
-      this.head = newNode;
-    } else {
-      let currentNode = this.head;
-      while (currentNode.pointer != null) {
-        currentNode = currentNode.pointer;
-      }
-      const newNode = new Node(value);
-      currentNode.pointer = newNode;
-    }
-  }
+  head = null;
 }
 class Node {
   pointer = null;
