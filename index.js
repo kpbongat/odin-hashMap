@@ -28,9 +28,9 @@ class HashMap {
       let currentNode = bucket.head;
       let previousNode;
       while (currentNode != null) {
-        if (currentNode.value.key === key) {
+        if (currentNode.value.key) {
           currentNode.value = { key: value };
-          break;
+          return;
         }
         previousNode = currentNode;
         currentNode = currentNode.pointer;
