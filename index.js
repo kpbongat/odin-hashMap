@@ -93,6 +93,12 @@ class HashMap {
   get length() {
     return this.#length;
   }
+
+  clear() {
+    for (let bucket of this.buckets) {
+      bucket.head = null;
+    }
+  }
 }
 
 class LinkedList {
