@@ -64,6 +64,28 @@ class HashMap {
     }
     return false;
   }
+
+  remove(key) {
+    const hashedKey = this.hash(key);
+    const bucket = this.buckets[hashedKey];
+
+    if (bucket.head.value[key]) {
+      bucket.head = null;
+      return true;
+    } else {
+      let currentNode = bucket.head;
+      let previousNode;
+      while (currentNode != null) {
+        if (currentNode.value[key]) {
+          previousNode.pointer = currentNode.pointer;
+        }
+
+        previousNode = currentNode;
+        currentNode = currentNode.pointer;
+      }
+      return false;
+    }
+  }
 }
 
 class LinkedList {
